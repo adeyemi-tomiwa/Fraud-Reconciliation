@@ -8,7 +8,7 @@ fake = Faker()
 
 DB_CONFIG = {
     "host": "localhost",
-    "dbname": "Fraud Reconciliation",
+    "dbname": "Fraud-Reconciliation",
     "user": "postgres",
     "password": "1234",
     "port": 5432,
