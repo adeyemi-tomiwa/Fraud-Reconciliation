@@ -16,7 +16,6 @@ Quantify how much drift or fraud risk exists in the system at any given point
 ## Architecture
 
 ```mermaid
-```mermaid
 flowchart TD
     A["Python (synthetic transaction generator, fraud + mismatch injection)"] --> B["PostgreSQL (source of record)"]
 
