@@ -3,6 +3,7 @@
 This project implements an end-to-end fraud detection and ledger reconciliation pipeline for a simulated fintech environment. Synthetic transaction data is generated in Python and loaded into PostgreSQL as two independent sources of truth, an internal ledger and a payment gateway feed, deliberately seeded with reconciliation drift. Databricks (PySpark) then joins the two sources to surface mismatches and applies fraud-scoring logic to flag suspicious activity. Results are written back to PostgreSQL, where Grafana renders a live monitoring dashboard.
 
 The objective is to demonstrate the full lifecycle a fintech data team deals with in production: ingesting transactional data, detecting where two systems of record disagree, scoring transactions for suspicious patterns, and surfacing all of it on a dashboard an analyst would actually use.
+
 ## Problem Statement
 
 Fintech platforms process transactions through multiple systems that don't always agree. A bank's internal ledger and a payment gateway's records can drift apart due to dropped webhooks, duplicate retries, or timing mismatches, while fraudulent transactions slip through unnoticed without active scoring. Without a reconciliation and monitoring layer, businesses cannot:
@@ -11,8 +12,11 @@ Detect when internal balances no longer match what the payment provider actually
 Catch suspicious transaction patterns (rapid small debits, abnormal amounts) close to real time
 Give analysts a single place to review flagged activity and its resolution status
 Quantify how much drift or fraud risk exists in the system at any given point
-Architecture
+
+## Architecture
+
 Python (synthetic transaction generator, fraud + mismatch injection)
+
                 │
                 ▼
         PostgreSQL (source of record)
