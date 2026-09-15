@@ -15,32 +15,24 @@ Quantify how much drift or fraud risk exists in the system at any given point
 
 ## Architecture
 
-Python (synthetic transaction generator, fraud + mismatch injection)
-
-                │
-                ▼
-        PostgreSQL (source of record)
-   ┌────────────┴─────────────┐
-   │                          │
-internal_ledger        gateway_transactions
-   │                          │
-   └────────────┬─────────────┘
-                ▼
-   Databricks / PySpark
-   
-   - full outer join on transaction_ref (reconciliation)
-     
-   - per-customer velocity and z-score fraud scoring
-                │
-     
-                ▼
-     
-   PostgreSQL (fraud_flags, written back)
-   
-                │
-     
-                ▼
-   Grafana (live dashboard)
+```mermaid
+flowchart TD
+    A["Python (synthetic transaction generator, fraud + mismatch injection)"] --> B["PostgreSQL (source of record)"]
+    
+    subgraph PostgreSQL
+        B --> C["internal_ledger"]
+        B --> D["gateway_transactions"]
+    end
+    
+    C --> E["Databricks / PySpark"]
+    D --> E
+    
+    E -->|1. Full outer join on transaction_ref (reconciliation)| F["Data Processing & Analytics"]
+    E -->|2. Per-customer velocity & z-score fraud scoring| F
+    
+    F --> G["PostgreSQL (fraud_flags, written back)"]
+    G --> H["Grafana (live dashboard)"]
+```
 Architecture Components
 Component	Tool
 Data generation	Python (psycopg2, Faker)
