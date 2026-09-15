@@ -34,14 +34,17 @@ flowchart TD
     
     F --> G["Grafana (live dashboard)"]
 ```
-Architecture Components
-Component	Tool
-Data generation	Python (psycopg2, Faker)
-Transactional storage	PostgreSQL
-Analytics / scoring engine	Databricks (PySpark, Spark SQL)
-Monitoring dashboard	Grafana
-Version control	Git + GitHub
-Key Concepts Demonstrated
+## Architecture Components
+
+| Component | Tool |
+| :--- | :--- |
+| Data generation | Python (psycopg2, Faker) |
+| Transactional storage | PostgreSQL |
+| Analytics / scoring engine | Databricks (PySpark, Spark SQL) |
+| Monitoring dashboard | Grafana |
+| Version control | Git + GitHub |
+
+## Key Concepts Demonstrated
 Simulating two independent systems of record and reconciling them
 Full outer join reconciliation logic (matched, amount mismatch, missing in gateway, missing in ledger)
 Per-customer statistical fraud scoring (velocity breach, amount outlier via z-score)
