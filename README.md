@@ -36,7 +36,7 @@ flowchart TD
 ```
 ## Architecture Components
 
-| Component | Tool |
+| ### Component | ### Tool |
 | :--- | :--- |
 | Data generation | Python (psycopg2, Faker) |
 | Transactional storage | PostgreSQL |
