@@ -82,7 +82,8 @@ Fraud patterns injected: velocity bursts (multiple small debits in a short windo
 | Dashboard	| Grafana
 | Version control | Git, GitHub
 
-Database Schema
+## Database Schema
+```text
 customers
 ├── customer_id (PK)
 ├── full_name
@@ -116,6 +117,7 @@ fraud_flags
 ├── flagged_at
 ├── resolved             -- has an analyst reviewed this case
 └── outcome              -- pending, confirmed_fraud, false_positive
+'''
 
 transaction_ref is intentionally not a hard foreign key between internal_ledger and gateway_transactions, since the entire point of the reconciliation step is that the two tables are allowed to disagree.
 
