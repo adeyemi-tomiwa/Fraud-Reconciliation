@@ -117,11 +117,11 @@ fraud_flags
 ├── flagged_at
 ├── resolved             -- has an analyst reviewed this case
 └── outcome              -- pending, confirmed_fraud, false_positive
-'''
+```
 
-transaction_ref is intentionally not a hard foreign key between internal_ledger and gateway_transactions, since the entire point of the reconciliation step is that the two tables are allowed to disagree.
+'transaction_ref' is intentionally not a hard foreign key between internal_ledger and gateway_transactions, since the entire point of the reconciliation step is that the two tables are allowed to disagree.
 
-Pipeline Walkthrough
+## Pipeline Walkthrough
 
 1. Generation. src/generator.py seeds 200 customers, then produces 5,000 transactions. Each transaction is written to internal_ledger, then mirrored into gateway_transactions with roughly 5% intentionally corrupted (dropped, duplicated, or amount-shifted) to simulate real-world gateway drift.
 
@@ -136,7 +136,7 @@ Amount outlier: transactions more than 3 standard deviations from that specific 
 
 5. Dashboard. Grafana connects directly to PostgreSQL and renders three panels: flag volume by reason, outcome breakdown (pending / confirmed fraud / false positive), and flag volume over time.
 
-Dashboard
+## Dashboard
 
 The Grafana dashboard includes:
 
@@ -144,9 +144,11 @@ Flag volume by reason — proportion of flags from velocity breaches vs. amount 
 Outcome breakdown — how many flagged transactions are still pending review vs. confirmed fraud vs. resolved as false positives
 Flags over time — flag volume trend across the simulated time window
 
-(Add dashboard screenshot here.)
+<img width="699" height="306" alt="Screenshot 2026-09-15 032335" src="https://github.com/user-attachments/assets/9dd5e5f4-c9d8-4a72-b3c1-265e512378d0" />
 
-File Structure
+
+## File Structure
+```text
 fintech-fraud-reconciliation/
 ├── src/
 │   └── generator.py          # synthetic transaction generator
@@ -155,11 +157,13 @@ fintech-fraud-reconciliation/
 ├── configs/                  # reserved for connection/config files
 ├── .gitignore
 └── README.md
+```
 
 Databricks notebooks currently live in the Databricks workspace and are not yet version-controlled in this repo. Exporting them into a databricks/ folder is listed under Future Developments.
 
-How to Run
-bash
+## How to Run
+
+```bash
 # 1. Create the database and schema
 createdb fraud_recon
 psql -U postgres -d fraud_recon -f sql/schema.sql
@@ -174,10 +178,18 @@ python src/generator.py
 #    (upload the exported CSVs or connect Spark directly, run the notebook)
 
 # 5. Connect Grafana to PostgreSQL and import the dashboard panels
-Future Developments
+```
+
+## Future Developments
+
 Replace manual CSV export/import between Postgres and Databricks with a live JDBC connection
+
 Move from batch generation to streaming ingestion for a true real-time pipeline
+
 Add CI/CD to run schema migrations and tests automatically on push
+
 Add Grafana alerting on flag rate thresholds
+
 Build out the analyst review workflow (outcome field) into an actual interface instead of manual SQL updates
+
 Version-control the Databricks notebooks alongside the rest of the codebase
