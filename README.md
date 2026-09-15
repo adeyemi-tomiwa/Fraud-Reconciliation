@@ -27,12 +27,18 @@ internal_ledger        gateway_transactions
    └────────────┬─────────────┘
                 ▼
    Databricks / PySpark
+   
    - full outer join on transaction_ref (reconciliation)
+     
    - per-customer velocity and z-score fraud scoring
                 │
+     
                 ▼
+     
    PostgreSQL (fraud_flags, written back)
+   
                 │
+     
                 ▼
    Grafana (live dashboard)
 Architecture Components
