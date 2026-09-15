@@ -16,22 +16,24 @@ Quantify how much drift or fraud risk exists in the system at any given point
 ## Architecture
 
 ```mermaid
+```mermaid
 flowchart TD
     A["Python (synthetic transaction generator, fraud + mismatch injection)"] --> B["PostgreSQL (source of record)"]
-    
-    subgraph PostgreSQL
-        B --> C["internal_ledger"]
-        B --> D["gateway_transactions"]
+
+    subgraph PostgreSQL ["PostgreSQL (source of record)"]
+        C["internal_ledger"]
+        D["gateway_transactions"]
     end
-    
+
+    B --> C
+    B --> D
+
     C --> E["Databricks / PySpark"]
     D --> E
+
+    E -->|"full outer join on transaction_ref (reconciliation)<br/>per-customer velocity and z-score fraud scoring"| F["PostgreSQL (fraud_flags, written back)"]
     
-    E -->|1. Full outer join on transaction_ref (reconciliation)| F["Data Processing & Analytics"]
-    E -->|2. Per-customer velocity & z-score fraud scoring| F
-    
-    F --> G["PostgreSQL (fraud_flags, written back)"]
-    G --> H["Grafana (live dashboard)"]
+    F --> G["Grafana (live dashboard)"]
 ```
 Architecture Components
 Component	Tool
